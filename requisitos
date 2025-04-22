@@ -1,0 +1,2 @@
+Hacer ahorcado en consola. El juego tiene cargado una lista de 100 palabras, elige una aleatoriamente, el usuario tendra tantas oportunidades para adivinar como letras tenga la palabra mas un 50% mas. 
+Por cada letra acertada sumara un punto y por cada una fallada se le restara. La puntuacion minima es 0.
