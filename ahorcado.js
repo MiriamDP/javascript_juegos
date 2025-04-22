@@ -25,9 +25,7 @@ const wordList = [
 let win=false;
 
 let playWord=randomWord(wordList).toUpperCase();
-console.log(playWord);
 let maxTries=Math.floor(playWord.length+playWord.length/2);
-console.log(maxTries);
 
 let tries=0;
 let guess=board(playWord); /*Crea la palabra en blanco*/ 
