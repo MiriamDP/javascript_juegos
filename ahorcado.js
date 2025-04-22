@@ -25,9 +25,8 @@ const wordList = [
 let win=false;
 
 let playWord=randomWord(wordList).toUpperCase();
-let maxTries=Math.floor(playWord.length+playWord.length/2);
+let tries=Math.floor(playWord.length+playWord.length/2);
 
-let tries=0;
 let guess=board(playWord); /*Crea la palabra en blanco*/ 
 
 play();
@@ -40,23 +39,19 @@ Como vamos a leer los datos de manera asincrona necesitamos crear la funcion de 
  * Funcion de juego principal
  */
 async function play(){
+    showBoard(guess);
 do {
-    console.log("Intentos restantes: "+(maxTries-tries));
-
-    /*Para evitar duplicidad del tablero ya que al estar al principio, la ultima letra tanto en caso de ganar como de perder no se mostraria en el tablero. 
-    De este modo solo lo muestra al princpio la primera vez para ademas darle la pista al jugador de cuantas letras tiene*/
-    if(tries==0){
-        showBoard(guess);
-    }
+    console.log("Intentos restantes: "+(tries));
 
     let letter=await readLetter();
 
-    if(isLetter(letter.toUpperCase())){
+    if(isLetter(letter.toUpperCase().charAt())){
         points++;
     }else{
         if (points>0){
             points--;
         }
+        tries--;
     }
 
     showBoard(guess);
@@ -64,21 +59,18 @@ do {
 
     if (guess.join("")==playWord){
         win=true;
-        console.log("Enhorabuena has ganado")
-    }else if(tries==maxTries-1){
-        console.log("Lo siento, has perdido no te quedan intentos")
+        console.log("Enhorabuena has ganado");
+    }else if(tries==0){
+        console.log("Lo siento, has perdido no te quedan intentos");
+        console.log("La palabra era: "+playWord);
     }
-
-    tries++;
 
     console.log();
 
-
-}while(tries<maxTries && !win);
+}while(tries>0 && !win);
 
 rl.close();
 }
-
 
 /**
  * Elige una palabra aleatoria del array de palabras precargadas
@@ -89,11 +81,6 @@ function randomWord(wordList){
     let randomIndex=Math.floor(Math.random()*wordList.length);
     return wordList[randomIndex];
 }
-
-function deleteAccent(word){
-    return word.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
-
 
 /**
  * Devuelve un array con los caracteres de la palabra ocultos por el caracter _
@@ -152,6 +139,12 @@ function isLetter(letter){
     return find;
 }
 
+/**
+ * Sirve para comparar dos letras independientemente de si tienen acento o no.
+ * @param {*} letter1 
+ * @param {*} letter2 
+ * @returns 
+ */
 function compareNoAccent(letter1,letter2){
     return (letter1.normalize("NFD").replace(/[\u0300-\u036f]/g, "")===letter2.normalize("NFD").replace(/[\u0300-\u036f]/g, ""))?true:false;
 }
