@@ -8,16 +8,20 @@ const rl=readLine.createInterface({
 /**/
 
 let points=0;
-let wordList=[
-    "Abanico",
-    "Barco",
-    "Sueño",
-    "Hurraca",
-    "Dificil",
-    "Jinete"
-];
+const wordList = [
+    "luz", "camino", "montaña", "agua", "sol", "libro", "ventana", "nube", "río", "cielo",
+    "lluvia", "sueño", "madera", "piedra", "sonrisa", "arena", "puerta", "luna", "silencio", "voz",
+    "mar", "hoja", "flor", "noche", "tiempo", "fuego", "piel", "viento", "alma", "verso",
+    "rostro", "luz", "café", "pájaro", "canción", "carta", "camisa", "espacio", "boca", "duda",
+    "árbol", "barco", "estrella", "historia", "mirada", "cuerda", "espina", "fuerza", "vino", "fruta",
+    "sombras", "techo", "trigo", "sendero", "destino", "roca", "frío", "calor", "mirar", "crecer",
+    "nido", "cobre", "pintura", "suelo", "cosecha", "solapa", "fluir", "acento", "sombra", "llama",
+    "melodía", "tristeza", "paso", "latido", "manantial", "reflejo", "jardín", "tecla", "eco", "piedra",
+    "resplandor", "cascada", "barro", "vela", "sabiduría", "raíz", "grito", "abrazo", "brisa", "cumbre",
+    "palabra", "reloj", "misterio", "encuentro", "claridad", "invierno", "suspiro", "templo", "encanto", "manto"
+  ];
 
-let option=1;
+
 let win=false;
 
 let playWord=randomWord(wordList).toUpperCase();
@@ -88,6 +92,10 @@ function randomWord(wordList){
     return wordList[randomIndex];
 }
 
+function deleteAccent(word){
+    return word.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
 
 /**
  * Devuelve un array con los caracteres de la palabra ocultos por el caracter _
@@ -131,17 +139,21 @@ function isLetter(letter){
     let find=false;
     let i=0;
     while(i<playWord.length && !find){
-        find=(playWord.charAt(i)==letter)?true:false;
+        find=compareNoAccent(letter,playWord.charAt(i));
         i++;
     }
 
     if (find){
         for(let i=0;i<playWord.length;i++){
-            if (playWord.charAt(i)==letter){
-                guess[i]=letter;
+            if (compareNoAccent(letter,playWord.charAt(i))){
+                guess[i]=playWord.charAt(i);
             }
         }
     }
 
     return find;
+}
+
+function compareNoAccent(letter1,letter2){
+    return (letter1.normalize("NFD").replace(/[\u0300-\u036f]/g, "")===letter2.normalize("NFD").replace(/[\u0300-\u036f]/g, ""))?true:false;
 }
