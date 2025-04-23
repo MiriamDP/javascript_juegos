@@ -12,7 +12,6 @@ body{
     display: grid;
     grid-template-rows: 20% 70% 10%;
     grid-template-columns: 100%;
-    background-color: aqua;
 }
 
 header{
@@ -53,7 +52,7 @@ main {
     height: 28%;
     border: ridge;
     border-width: 20%;
-    border-color: rgb(243, 0, 0);
+    border-color: #ad1f1f;
     border-radius: 5%;
     padding: 10%;
     background-color:#67191f;
@@ -70,7 +69,6 @@ main {
 }
 
 #game-board {
-    background-color: aqua;
     height: 100%;
     display: flex;
     flex-direction: row;
@@ -87,6 +85,7 @@ main {
     justify-self: flex-end;
     justify-content: center;
     align-self: center;
+    margin-bottom: 2%;
 }
 
 .letter {
@@ -133,9 +132,20 @@ main {
 
 .card-letter{
     background-color: antiquewhite;
-    width: 5%;
-    height: 10%;
+    width: 20%;
+    aspect-ratio: 1/1;
     text-align: center;
+    margin:5%;
+    font-family: "Rye", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 4vw;
+    border-radius: 5%;
+    align-content: center;
+    color:#ab3130;
+    border:solid 2px #ab3130;
+    align-self: flex-end;
+    
 }
 
 
@@ -150,3 +160,43 @@ footer {
 
 }
 
+#insert {
+    height: 15%;
+    display: flex;
+    flex-direction: row;
+    justify-self: center;
+    align-self: center;
+    width: fit-content;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+input[type="submit"] {
+    font-family: "Rye", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1vw;
+    height: 75%;
+    aspect-ratio: 1/1;
+    border: ridge;
+    border-width: 20%;
+    border-color:  #ad1f1f;
+    border-top-right-radius: 5%;
+    border-bottom-right-radius: 5%;
+    background-color:#67191f;
+    color: #eedbbf;
+    cursor: pointer;
+}
+
+input[type="text"]{
+    border-top-left-radius: 5%;
+    border-bottom-left-radius: 5%;
+    height: 75%;
+    aspect-ratio: 1/1;
+    width: 100%;
+    font-family: "Rye", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.2vw;
+    text-align: center;
+}
