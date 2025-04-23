@@ -1,0 +1,152 @@
+*{
+    box-sizing: border-box;
+}
+
+html, body{
+    height: 100%;
+    margin:0;
+    color: #eedbbf;
+}
+
+body{
+    display: grid;
+    grid-template-rows: 20% 70% 10%;
+    grid-template-columns: 100%;
+    background-color: aqua;
+}
+
+header{
+    grid-row: 1/2;
+    grid-column: 1/2;
+    background-color: #67191f;
+    font-family: "Rye", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 3vw;
+    text-align: center;
+    align-content: center;
+}
+
+main {
+    grid-row:2/3;
+    grid-column: 1/2;
+    background-color: #eedbbf;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    display: grid;
+    grid-template-columns: 20% 55% 25%;
+    grid-template-rows: 100%;
+}
+
+#opt-zone{
+    grid-row: 1/2;
+    grid-column: 1/2;
+    align-content: center;
+    text-align: center;
+}
+
+#opt-zone button {
+    font-family: "Rye", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.5vw;
+    width: 55%;
+    height: 28%;
+    border: ridge;
+    border-width: 20%;
+    border-color: rgb(243, 0, 0);
+    border-radius: 5%;
+    padding: 10%;
+    background-color:#67191f;
+    color: #eedbbf;
+    box-shadow: 0 0 5px 5px #ab3130;
+    cursor: pointer;
+}
+
+#game-zone{
+    grid-row:1/2;
+    grid-column: 2/3;
+    display: flex;
+    flex-direction: column;
+}
+
+#game-board {
+    background-color: aqua;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#letters-left {
+    width: 90%;
+    color:#67191f;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-self: flex-end;
+    justify-content: center;
+    align-self: center;
+}
+
+.letter {
+    padding:2%;
+    font-size: 2vw;
+    font-family: "Rye", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+#info-zone{
+    grid-row: 1/2;
+    grid-column: 3/4;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 15% 70% 15%;
+    grid-template-areas: "points" "." "tries";
+}
+
+#points{
+    grid-area: points;
+    align-content: center;
+}
+
+#points>div, #tries>div {
+    border: solid black 2px;
+    width: 80%;
+    padding: 2.5% 0;
+    justify-self: center;
+    text-align: center;
+    border-radius: 10px;
+    font-family: "Rye", serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #ab3130;
+    background-color: antiquewhite;
+    font-size: 1.5vw;
+}
+
+#tries{
+    grid-area: tries;
+    align-content: center;
+}
+
+.card-letter{
+    background-color: antiquewhite;
+    width: 5%;
+    height: 10%;
+    text-align: center;
+}
+
+
+footer {
+    grid-row: 3/4;
+    grid-column: 1/2;
+    background-color: #ab3130;
+    text-align: center;
+    align-content: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1vw;
+
+}
+
