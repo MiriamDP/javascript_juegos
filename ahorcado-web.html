@@ -6,6 +6,10 @@
     <title>El juego del ahorcado</title>
     <link href="ahorcado-estilo.css" type="text/css" rel="stylesheet">
 
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rye&display=swap" rel="stylesheet">
@@ -13,13 +17,10 @@
 <body>
     <header>El juego del ahorcado</header>
     <main>
-        <div id="opt-zone"><button>Nuevo juego</button></div>
+        <div id="opt-zone"><button id="new-game">Nuevo juego</button></div>
         <div id="game-zone">
             <div id="game-board">
-                <div class="card-letter">_</div>
-                <div class="card-letter">A</div>
-                <div class="card-letter">_</div>
-                <div class="card-letter">A</div>
+
             </div>
             <div id="insert">
                 <input type="text" placeholder="A">
@@ -53,15 +54,188 @@
                     <div class="letter">X</div>
                     <div class="letter">Y</div>
                     <div class="letter">Z</div>
-
             </div>
         </div>
         <div id="info-zone">
-            <div id="points"><div>Puntos: 1</div></div>
-            <div id="tries"><div>Intentos restantes: 1</div></div>
-            <div>Imagen</div>
+            <div id="points"><div></div></div>
+            <div id="tries"><div></div></div>
+            <div id="image-state"></div>
         </div>
     </main>
     <footer>Realizado por:<br>Miriam Diaz Plaza</footer>
+
+    <script>
+        $(document).ready(function(){
+            const wordList = [
+        "luz", "camino", "montaña", "agua", "sol", "libro", "ventana", "nube", "río", "cielo",
+        "lluvia", "sueño", "madera", "piedra", "sonrisa", "arena", "puerta", "luna", "silencio", "voz",
+        "mar", "hoja", "flor", "noche", "tiempo", "fuego", "piel", "viento", "alma", "verso",
+        "rostro", "luz", "café", "pájaro", "canción", "carta", "camisa", "espacio", "boca", "duda",
+        "árbol", "barco", "estrella", "historia", "mirada", "cuerda", "espina", "fuerza", "vino", "fruta",
+        "sombras", "techo", "trigo", "sendero", "destino", "roca", "frío", "calor", "mirar", "crecer",
+        "nido", "cobre", "pintura", "suelo", "cosecha", "solapa", "fluir", "acento", "sombra", "llama",
+        "melodía", "tristeza", "paso", "latido", "manantial", "reflejo", "jardín", "tecla", "eco", "piedra",
+        "resplandor", "cascada", "barro", "vela", "sabiduría", "raíz", "grito", "abrazo", "brisa", "cumbre",
+        "palabra", "reloj", "misterio", "encuentro", "claridad", "invierno", "suspiro", "templo", "encanto", "manto"
+      ];
+        let word=wordList[Math.floor(Math.random()*100)];
+        let tries=Math.floor(word.length+word.length/2);
+        $("#tries div").text("Intentos: "+tries);
+        console.log(word);
+
+        let points=0;
+        $("#points div").text("Puntos: "+points);
+
+        const width=(95/word.length);
+        const lateralPadding=width*0.05;
+
+        for (let i=0;i<word.length;i++){
+            const newContainer=$("<div></div>").addClass("card-letter").text("_");
+            const newContSol=$("<div></div>").addClass("card-letter solution").text(word.charAt(i).toUpperCase());
+            newContainer.css("width",width+"%");
+            newContainer.css("padding-right",lateralPadding+"%");
+            newContSol.css("width",width+"%");
+            newContSol.css("padding-right",lateralPadding+"%");
+            newContSol.hide(); //los div de la solucion estan ocultos detras de los cifrados
+            $("#game-board").append(newContainer);
+            $("#game-board").append(newContSol);
+
+        }
+
+        const newImg=$("<img>").addClass("image").attr("src","https://media1.tenor.com/m/LEccwYxkRxwAAAAC/swing.gif");
+        $("#image-state").append(newImg);
+
+        $("#new-game").click(function(){
+            location.reload();
+        });
+
+        let lettersUsed=[];
+        let win=false;
+
+        $("input[type='text']").focus();
+
+        $("input[type='submit']").click(function(){
+            console.log(lettersUsed);
+            if(tries>0 && !win){
+                let value=$("input[type='text']").val().toUpperCase();
+                $("input[type='text']").val("");
+
+                /*Comprobamos si no se ha introducido anteriormente la letra*/
+                let letterValid=true;
+                if (lettersUsed.length!=0){
+                    let i=0;
+                    while(i<lettersUsed.length && letterValid){
+                        console.log(i);
+                        if (lettersUsed[i++]==value){
+                            letterValid=false;
+                        }
+                    }
+                }
+
+                /*Si es una letra nueva*/
+                if (letterValid){
+                    lettersUsed.push(value);
+
+                    $(".letter").each(function(){
+                        if($(this).text()==value){
+                            $(this).css("color","grey");
+                            return false;
+                        }
+                    });
+
+                    let find=false;
+                    $(".solution").each(function(){
+                        if($(this).text()==value){
+                            $(this).prev().hide();
+                            $(this).show();
+                            find=true;
+                        }
+                    });
+
+                    if (!find){
+                        decreseTries();
+                        if (points>0){
+                            points--;
+                            $("#points div").text("Puntos: "+points);
+                        }
+                    }else {
+                        points++;
+                        $("#points div").text("Puntos: "+points);
+                    }
+
+                    let solutionVisible=0;
+                    $(".solution").each(function(){
+                        if($(this).css("display")!="none"){
+                            solutionVisible++;
+                        }
+                    });
+
+                    if (solutionVisible==word.length){
+                        win=true;
+                        // alert("Enhorabuena has ganado. Has conseguido ${points} puntos");
+                        console.log("Enhorbauena")
+                        $(".image").remove();
+                        const newImg=$("<img>").addClass("image").attr("src","https://media1.tenor.com/m/Sw0bKIbbz8IAAAAd/clint-eastwood.gif");
+                        $("#image-state").append(newImg);
+
+                    }
+
+                    if (tries==0 && !win){
+                        // alert("Lo sentimos has perdido. Intentalo de nuevo");
+                        $(".image").remove();
+                        const newImg=$("<img>").addClass("image").attr("src","https://media1.tenor.com/m/3qtsxFSPDCAAAAAd/jump-hanging.gif");
+                        $("#image-state").append(newImg);
+                        $(".card-letter").each(function(){
+                            if($(this).hasClass("solution")){
+                                $(this).show();
+                            }else{
+                                $(this).hide();
+                            }
+                        });
+                    }
+                    $("input[type='text']").focus();
+
+                }
+            }else if (win) {
+                alert("Enhorabuena has ganado. Has conseguido ${points} puntos");
+            }else {
+
+                alert("Has perdido.Pulsa Nuevo Juego para una nueva partida");
+            }
+        });
+
+        function decreseTries(){
+            tries--;
+            $("#tries div").text("Intentos: "+tries);
+        }
+
+
+
+        });
+    </script>
+
+    <!-- <script>
+        const wordList = [
+        "luz", "camino", "montaña", "agua", "sol", "libro", "ventana", "nube", "río", "cielo",
+        "lluvia", "sueño", "madera", "piedra", "sonrisa", "arena", "puerta", "luna", "silencio", "voz",
+        "mar", "hoja", "flor", "noche", "tiempo", "fuego", "piel", "viento", "alma", "verso",
+        "rostro", "luz", "café", "pájaro", "canción", "carta", "camisa", "espacio", "boca", "duda",
+        "árbol", "barco", "estrella", "historia", "mirada", "cuerda", "espina", "fuerza", "vino", "fruta",
+        "sombras", "techo", "trigo", "sendero", "destino", "roca", "frío", "calor", "mirar", "crecer",
+        "nido", "cobre", "pintura", "suelo", "cosecha", "solapa", "fluir", "acento", "sombra", "llama",
+        "melodía", "tristeza", "paso", "latido", "manantial", "reflejo", "jardín", "tecla", "eco", "piedra",
+        "resplandor", "cascada", "barro", "vela", "sabiduría", "raíz", "grito", "abrazo", "brisa", "cumbre",
+        "palabra", "reloj", "misterio", "encuentro", "claridad", "invierno", "suspiro", "templo", "encanto", "manto"
+      ];
+        let word=wordList[Math.floor(Math.random()*100)];
+        console.log(word);
+        const container=document.getElementById("game-board");
+        for (let i=0;i<word.length;i++){
+            const newContainer=document.createElement("div");
+            newContainer.className="card-letter";
+            newContainer.textContent="_";
+            container.appendChild(newContainer);
+        }
+    </script> -->
 </body>
 </html>
