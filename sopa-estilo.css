@@ -1,0 +1,135 @@
+*{
+    box-sizing: border-box;
+}
+
+html, body{
+    height: 100%;
+    margin:0;
+    color: #eedbbf;
+}
+
+
+body{
+    display: grid;
+    grid-template-rows: 7.5% 85% 7.5%;
+    grid-template-columns: 100%;
+    background-color: rgb(27, 27, 27);
+    
+}
+
+header,footer,.word,#points,input[type="text"] {
+    font-family: "Audiowide", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    cursor: default;
+}
+
+header {
+    grid-row: 1/2;
+    grid-column: 1/2;
+    border-bottom: 1px #dfa05d solid;
+    text-align: center;
+    align-content: center;
+    font-size: 2vw;
+    color: #dfa05d;
+    background-color: #dfa05d25;
+      
+}
+
+footer{
+    grid-row: 3/4;
+    grid-column: 1/2;
+    color: #dfa05d;
+    text-align: right;
+    align-content: center;
+    margin-right: 1%;
+}
+
+main {
+    grid-row: 2/3;
+    grid-column: 1/2;
+    display: grid;
+    grid-template-rows: 100%;
+    grid-template-columns: 33.3% 33.3% 33.3%;
+    justify-items: center;
+    align-items: center;
+}
+
+#correct-words, #wrong-words {
+    height: 90%;
+    width: 80%;
+    border-radius: 35px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 2%;
+    text-align: center;
+    font-size: 2vw;
+    color:  rgb(27, 27, 27);
+}
+
+#correct-words {
+    grid-row: 1/2;
+    grid-column: 1/2;
+    background-color: #658761;
+}
+
+#wrong-words {
+    grid-row:1/2;
+    grid-column: 3/4;
+    background-color: #ac5045;
+
+}
+
+.word {
+    padding: 1%;
+}
+
+#soup {
+    grid-row:1/2;
+    grid-column: 2/3;
+    justify-self: normal;
+    align-self: normal;
+    display: grid;
+    grid-template-rows: 10% 80% 10%;
+    grid-template-columns: 100%;
+    grid-template-areas: "points" "board" "write";
+    background-color: wheat;
+}
+
+#points {
+    grid-area: points;
+    background-color: blueviolet;
+    justify-self: center;
+    align-items: center;
+    width: 90%;
+    margin:1%;
+    border-radius: 10px;
+    background-color: #dfa05d;
+    color:rgb(27, 27, 27);
+    text-align: center;
+    align-content: center;
+    font-size: 2vw;
+}
+
+#board {
+    grid-area: board;
+    background-color: aqua;
+}
+
+#write {
+    grid-area: write;
+    background-color: darkblue;
+    justify-self: center;
+    align-items: center;
+    height: 90%;
+    width: 90%;
+    margin:1%;
+    border:#dfa05d solid 5px;
+    border-radius: 10px;
+    background-color: #ffffff50;
+    color:rgb(27, 27, 27);
+    text-align: center;
+    align-content: center;
+    font-size: 2vw;
+}
