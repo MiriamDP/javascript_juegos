@@ -1,0 +1,21 @@
+INFO 
+Maquetar cada una de las web me ha llevado unas dos horas cada una
+La programacion del ahorcado web unas 5-6 horas, la programacion de la sopa de letras web unas 5 horas, la version de consola del ahorcado
+2 horas y la de la sopa de letras unas 4 horas.
+
+POSIBLES MEJORAS
+AHORCADO HTML
+    Quitar el boton de enviar las letras y que se haga pulsando enter
+    Poder hacer click en las letras informativas para jugar de este modo tambien sin usar el input de texto
+    Mejorar la experiencia de usuario al finalizar la partida, en especial al perder
+
+SOPA DE LETRAS
+    Añadir boton de nuevo juego
+    Mejorar la experiencia de usuario al ganar la partida
+    Mejorar el diseño general de la web
+    Mejorar la legibilidad de la sopa para hacerla mas accesible
+
+AHORCADO CONSOLA, SOPA DE LETRAS
+    Revision del codigo para su refactorizacion
+
+
