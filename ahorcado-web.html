@@ -23,7 +23,7 @@
 
             </div>
             <div id="insert">
-                <input type="text" placeholder="A">
+                <input type="text" placeholder="A" maxlength="1">
                 <input type="submit">
             </div>
             <div id="letters-left">
@@ -115,17 +115,14 @@
         $("input[type='text']").focus();
 
         $("input[type='submit']").click(function(){
-            console.log(lettersUsed);
             if(tries>0 && !win){
                 let value=$("input[type='text']").val().toUpperCase();
-                $("input[type='text']").val("");
 
                 /*Comprobamos si no se ha introducido anteriormente la letra*/
                 let letterValid=true;
                 if (lettersUsed.length!=0){
                     let i=0;
                     while(i<lettersUsed.length && letterValid){
-                        console.log(i);
                         if (lettersUsed[i++]==value){
                             letterValid=false;
                         }
@@ -145,7 +142,7 @@
 
                     let find=false;
                     $(".solution").each(function(){
-                        if($(this).text()==value){
+                        if(compareNoAccent($(this).text(),value)){//$(this).text()==value
                             $(this).prev().hide();
                             $(this).show();
                             find=true;
@@ -191,6 +188,7 @@
                             }
                         });
                     }
+                    $("input[type='text']").val("");
                     $("input[type='text']").focus();
 
                 }
@@ -207,6 +205,19 @@
             $("#tries div").text("Intentos: "+tries);
         }
 
+        function compareNoAccent(letter1,letter2){
+            let compare;
+            if (letter1.toUpperCase()=="Ñ" || letter2.toUpperCase()=="Ñ"){
+                if (letter1.toUpperCase()==letter2.toUpperCase()){
+                    compare=true;
+                }else {
+                    compare=false;
+                }
+            }else {
+                compare=(letter1.normalize("NFD").replace(/[\u0300-\u036f]/g, "")===letter2.normalize("NFD").replace(/[\u0300-\u036f]/g, ""))?true:false;
+            }
+            return compare;
+        }
 
 
         });

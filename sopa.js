@@ -56,10 +56,8 @@ do {
         for (let j=0;j<wordList[i].length;j++){
             if(info[2]==true){ //horizontal
                 soup[info[0]][info[1]+j]="\x1b[32m"+soup[info[0]][info[1]+j]+"\x1b[0m";
-                // console.log(soup[info[0]][info[1]+j]);
             }else {
                 soup[info[0]+j][info[1]]="\x1b[32m"+soup[info[0]+j][info[1]]+"\x1b[0m";
-                // console.log(soup[info[0]+j][info[1]]);
             }
         }
         printBoard();

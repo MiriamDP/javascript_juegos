@@ -16,53 +16,39 @@
     <header>Sopa de letras</header>
     <main>
         <div id="correct-words">
-            <div class="word ok">Jinete</div>
-            <div class="word ok">Sueño</div>
         </div>
         <div id="soup">
-            <div id="points">Puntos: 5</div>
+            <div id="points">Puntos: 0</div>
             <div id="board">
                 <table id="board-table"></table>
             </div>
             <input type="text" id="write">
         </div>
         <div id="wrong-words">
-            <div class="word bad">Tomate</div>
-            <div class="word bad">Gacela</div>
-            <div class="word bad">Musculo</div>
         </div>
     </main>
     <footer>Realizado por:<br>Miriam Diaz Plaza</footer>
 
     <script>
         $(document).ready(function(){
-        //     const wordList = [
-        // "luz", "camino", "montaña", "agua", "sol", "libro", "ventana", "nube", "río", "cielo",
-        // "lluvia", "sueño", "madera", "piedra", "sonrisa", "arena", "puerta", "luna", "silencio", "voz",
-        // "mar", "hoja", "flor", "noche", "tiempo", "fuego", "piel", "viento", "alma", "verso",
-        // "rostro", "luz", "café", "pájaro", "canción", "carta", "camisa", "espacio", "boca", "duda",
-        // "árbol", "barco", "estrella", "historia", "mirada", "cuerda", "espina", "fuerza", "vino", "fruta",
-        // "sombras", "techo", "trigo", "sendero", "destino", "roca", "frío", "calor", "mirar", "crecer",
-        // "nido", "cobre", "pintura", "suelo", "cosecha", "solapa", "fluir", "acento", "sombra", "llama",
-        // "melodía", "tristeza", "paso", "latido", "manantial", "reflejo", "jardín", "tecla", "eco", "piedra",
-        // "resplandor", "cascada", "barro", "vela", "sabiduría", "raíz", "grito", "abrazo", "brisa", "cumbre",
-        // "palabra", "reloj", "misterio", "encuentro", "claridad", "invierno", "suspiro", "templo", "encanto", "manto"
-        // ];
+
+        const wordListComplete = [
+        "luz", "camino", "montaña", "agua", "sol", "libro", "ventana", "nube", "río", "cielo",
+        "lluvia", "sueño", "madera", "piedra", "sonrisa", "arena", "puerta", "luna", "silencio", "voz",
+        "mar", "hoja", "flor", "noche", "tiempo", "fuego", "piel", "viento", "alma", "verso",
+        "rostro", "luz", "café", "pájaro", "canción", "carta", "camisa", "espacio", "boca", "duda",
+        "árbol", "barco", "estrella", "historia", "mirada", "cuerda", "espina", "fuerza", "vino", "fruta",
+        "sombras", "techo", "trigo", "sendero", "destino", "roca", "frío", "calor", "mirar", "crecer",
+        "nido", "cobre", "pintura", "suelo", "cosecha", "solapa", "fluir", "acento", "sombra", "llama",
+        "melodía", "tristeza", "paso", "latido", "manantial", "reflejo", "jardín", "tecla", "eco", "piedra",
+        "resplandor", "cascada", "barro", "vela", "sabiduría", "raíz", "grito", "abrazo", "brisa", "cumbre",
+        "palabra", "reloj", "misterio", "encuentro", "claridad", "invierno", "suspiro", "templo", "encanto", "manto"
+      ];
 
         const boardSize=20;
-
-        let wordList=[
-        "Abanico",
-        "Barco",
-        "Sueño",
-        "Hurraca",
-        "Dificil",
-        "Jinete",
-        "Sal",
-        "Plomo",
-        "Cafe",
-        "Junta"
-        ];
+        let points=0;
+        let wordList=createWordList();
+        console.log(wordList);
 
         /*Creamos la tabla*/
         for (let i=0;i<boardSize;i++){
@@ -77,6 +63,117 @@
         });
 
         let agenda=insertWords();
+        let insertedWords=[];
+        let win=0;
+
+        $("input[type='text']").focus();
+        $("input[type='text']").keydown(function(event){
+            if(win<10){
+
+                if (event.key==="Enter"){
+                    let value=$("input[type='text']").val().toUpperCase();
+                    let wordValid=true;
+                    if(insertedWords.length!=0){
+                        let i=0;
+                        while(i<insertedWords.length && wordValid){
+                            if (insertedWords[i++]==value){
+                                wordValid=false;
+                            }
+                        }
+                    }
+                    
+                    if (wordValid){
+                        insertedWords.push(value);
+                        
+                        /*Logica de juego*/
+                        /*1. Comparamos value con la lista de palabras*/
+                        let i=0;
+                        let find=false;
+                        while (i<wordList.length && !find){
+                            if (compareNoAccent(wordList[i++].toUpperCase(),value)){
+                                find=true;
+                            }
+                        }
+
+                        if (find){
+                            win++;
+                            /*2a. Insertamos en la lista de palabras correctas*/
+                            let word=wordList[--i];
+                            $("#correct-words").append($("<div></div>").addClass("word").text(word));
+                            points++;
+                            /*3. Cambiamos el color de la palabra en la sopa*/
+                            let info=agenda.get(word);
+                            if (info[2]==true){
+                                let row=$(".row").eq(info[0]);
+                                for (let j=0;j<word.length;j++){
+                                    row.find("td").eq(info[1]+j).addClass("ok");
+                                }
+                            }else {
+                                for (let j=0;j<word.length;j++){
+                                    let row=$(".row").eq(info[0]+j);
+                                    row.find("td").eq(info[1]).addClass("ok");
+                                }
+                            }
+
+                            updatePoints();
+
+                            if (win==wordList.length){
+                               $(body).append($("<div></div>").text("Ganaste").css("z-index","100"));
+                            }
+
+                        }else {
+                            /*2b. Insertamos en la lista de incorrectas*/
+                            $("#wrong-words").append($("<div></div>").addClass("word").text(value.toLowerCase()));
+                            if(points>0){
+                                points--;
+                            }
+
+                            updatePoints();
+
+                        }
+                    }
+
+                    $("input[type='text']").val("");
+                    $("input[type='text']").focus();
+                    
+                }
+            }else {
+                alert("¡GANASTE! Recarga la pagina para una nueva partida");
+            }
+
+        });
+
+        function createWordList(){
+            let wordList=[];
+            for (let i=0;i<10;i++){
+                let exist=false;
+                do {
+                    let word=wordListComplete[Math.floor(Math.random()*100)];
+                    console.log(word);
+                    let j=0;
+                    let exist=false;
+                    if (wordList.length!=0){
+                        while(j<wordList.length && !exist){
+                            if (wordList[j++]==word){
+                                exist=true;
+                            }
+                        }
+                        if (!exist){
+                            wordList.push(word);
+                        }
+                    }else {
+                        wordList.push(word);
+                    }
+                }while (exist);
+            }
+            return wordList;
+
+        }
+
+        function updatePoints(){
+            $("#points").text("Puntos: "+points);
+
+        }
 
         function insertWords(){
             let agenda=new Map();
@@ -119,7 +216,7 @@
                 let i=0;
                 let isValid=true;
 
-                if(dir==true){ //comprobamos posicion final segun la direccion
+                if(dir==true){ 
                     let row=$(".row").eq(indexRow);
                     while(i<word.length && isValid){
                         if ($(".row").eq(indexRow).find("td").eq((indexCol+i)).text()!=""){
@@ -158,22 +255,15 @@
                     $(this).text(String.fromCharCode(65+Math.random()*26));
                 }
             });
-            // for(let i=0;i<rowSize;i++){
-            //     for(let j=0;j<colSize;j++){
-            //         if (soup[i][j]==0){
-            //             soup[i][j]=String.fromCharCode(65+Math.random()*26);
-            //         }
-            //     }
-            // }
         }
 
-        function createPlayWords(){
-            let playList=[];
-            for (let i=0;i<10;i++){
-                playList.push(wordList[Math.floor(Math.random()*100)]);
-            }
-            return playList;
+        function compareNoAccent(word1,word2){
+
+                return (word1.normalize("NFD").replace(/[\u0300-\u036f]/g, "")===word2.normalize("NFD").replace(/[\u0300-\u036f]/g, ""))?true:false;
+
         }
+
+        console.log(compareNoAccent("dificil","Díficil"));
 
         });
     </script>
