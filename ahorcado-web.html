@@ -172,7 +172,6 @@
 
                     if (solutionVisible==word.length){
                         win=true;
-                        // alert("Enhorabuena has ganado. Has conseguido ${points} puntos");
                         console.log("Enhorbauena")
                         $(".image").remove();
                         const newImg=$("<img>").addClass("image").attr("src","https://media1.tenor.com/m/Sw0bKIbbz8IAAAAd/clint-eastwood.gif");
@@ -181,7 +180,6 @@
                     }
 
                     if (tries==0 && !win){
-                        // alert("Lo sentimos has perdido. Intentalo de nuevo");
                         $(".image").remove();
                         const newImg=$("<img>").addClass("image").attr("src","https://media1.tenor.com/m/3qtsxFSPDCAAAAAd/jump-hanging.gif");
                         $("#image-state").append(newImg);
@@ -214,28 +212,5 @@
         });
     </script>
 
-    <!-- <script>
-        const wordList = [
-        "luz", "camino", "montaña", "agua", "sol", "libro", "ventana", "nube", "río", "cielo",
-        "lluvia", "sueño", "madera", "piedra", "sonrisa", "arena", "puerta", "luna", "silencio", "voz",
-        "mar", "hoja", "flor", "noche", "tiempo", "fuego", "piel", "viento", "alma", "verso",
-        "rostro", "luz", "café", "pájaro", "canción", "carta", "camisa", "espacio", "boca", "duda",
-        "árbol", "barco", "estrella", "historia", "mirada", "cuerda", "espina", "fuerza", "vino", "fruta",
-        "sombras", "techo", "trigo", "sendero", "destino", "roca", "frío", "calor", "mirar", "crecer",
-        "nido", "cobre", "pintura", "suelo", "cosecha", "solapa", "fluir", "acento", "sombra", "llama",
-        "melodía", "tristeza", "paso", "latido", "manantial", "reflejo", "jardín", "tecla", "eco", "piedra",
-        "resplandor", "cascada", "barro", "vela", "sabiduría", "raíz", "grito", "abrazo", "brisa", "cumbre",
-        "palabra", "reloj", "misterio", "encuentro", "claridad", "invierno", "suspiro", "templo", "encanto", "manto"
-      ];
-        let word=wordList[Math.floor(Math.random()*100)];
-        console.log(word);
-        const container=document.getElementById("game-board");
-        for (let i=0;i<word.length;i++){
-            const newContainer=document.createElement("div");
-            newContainer.className="card-letter";
-            newContainer.textContent="_";
-            container.appendChild(newContainer);
-        }
-    </script> -->
 </body>
 </html>

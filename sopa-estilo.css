@@ -94,7 +94,6 @@ main {
     grid-template-rows: 10% 80% 10%;
     grid-template-columns: 100%;
     grid-template-areas: "points" "board" "write";
-    background-color: wheat;
 }
 
 #points {
@@ -114,7 +113,24 @@ main {
 
 #board {
     grid-area: board;
-    background-color: aqua;
+    background-color: wheat;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+
+#board-table {
+    height: 100%;
+    width: 100%;
+    justify-self: center;
+    font-size: 1vw;
+    table-layout: auto;
+    text-align: center;
+    border-collapse: collapse;
+    font-weight: bold;
+    font-family: sans-serif;
+    color: black;
+    text-align: center;
 }
 
 #write {

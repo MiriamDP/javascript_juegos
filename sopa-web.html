@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 
 </head>
 <body>
@@ -19,7 +21,9 @@
         </div>
         <div id="soup">
             <div id="points">Puntos: 5</div>
-            <div id="board"></div>
+            <div id="board">
+                <table id="board-table"></table>
+            </div>
             <input type="text" id="write">
         </div>
         <div id="wrong-words">
@@ -29,5 +33,149 @@
         </div>
     </main>
     <footer>Realizado por:<br>Miriam Diaz Plaza</footer>
+
+    <script>
+        $(document).ready(function(){
+        //     const wordList = [
+        // "luz", "camino", "montaña", "agua", "sol", "libro", "ventana", "nube", "río", "cielo",
+        // "lluvia", "sueño", "madera", "piedra", "sonrisa", "arena", "puerta", "luna", "silencio", "voz",
+        // "mar", "hoja", "flor", "noche", "tiempo", "fuego", "piel", "viento", "alma", "verso",
+        // "rostro", "luz", "café", "pájaro", "canción", "carta", "camisa", "espacio", "boca", "duda",
+        // "árbol", "barco", "estrella", "historia", "mirada", "cuerda", "espina", "fuerza", "vino", "fruta",
+        // "sombras", "techo", "trigo", "sendero", "destino", "roca", "frío", "calor", "mirar", "crecer",
+        // "nido", "cobre", "pintura", "suelo", "cosecha", "solapa", "fluir", "acento", "sombra", "llama",
+        // "melodía", "tristeza", "paso", "latido", "manantial", "reflejo", "jardín", "tecla", "eco", "piedra",
+        // "resplandor", "cascada", "barro", "vela", "sabiduría", "raíz", "grito", "abrazo", "brisa", "cumbre",
+        // "palabra", "reloj", "misterio", "encuentro", "claridad", "invierno", "suspiro", "templo", "encanto", "manto"
+        // ];
+
+        const boardSize=20;
+
+        let wordList=[
+        "Abanico",
+        "Barco",
+        "Sueño",
+        "Hurraca",
+        "Dificil",
+        "Jinete",
+        "Sal",
+        "Plomo",
+        "Cafe",
+        "Junta"
+        ];
+
+        /*Creamos la tabla*/
+        for (let i=0;i<boardSize;i++){
+            $("#board-table").append($("<tr></tr>").addClass("row"));
+        }
+
+        $(".row").each(function(){
+            for (let j=0;j<boardSize;j++){
+                $(this).append($("<td></td>").addClass("col"));
+            }
+
+        });
+
+        let agenda=insertWords();
+
+        function insertWords(){
+            let agenda=new Map();
+            for (let word of wordList){
+                let indexes=findIndex(word);
+                let wordChar=[...word.toUpperCase()];
+                let row=indexes[0];
+                let col=indexes[1];
+                if (indexes[2]==true){ /*Horizontal*/
+                    for (let i=0;i<wordChar.length;i++){
+                        $(".row").eq(row).find("td").eq(col++).text(wordChar[i]);
+                    }
+                }else {
+                    for (let i=0;i<wordChar.length;i++){
+                        $(".row").eq(row++).find("td").eq(col).text(wordChar[i]);
+                    }
+
+                }
+                agenda.set(word,indexes);
+            }
+            fillBoard();
+
+            return agenda;
+        }
+
+        function findIndex(word){
+            let indexes=[];
+            let indexFind=false;
+            let dir=wordDirection();
+            let j=0;
+            do{
+                if (dir==true){ /*Si es uno ES HORIZONTAL*/
+                    indexRow=Math.floor(Math.random()*boardSize);
+                    indexCol=Math.floor(Math.random()*(boardSize-word.length));
+                }else {
+                    indexRow=Math.floor(Math.random()*(boardSize-word.length));
+                    indexCol=Math.floor(Math.random()*boardSize);
+                }
+
+                let i=0;
+                let isValid=true;
+
+                if(dir==true){ //comprobamos posicion final segun la direccion
+                    let row=$(".row").eq(indexRow);
+                    while(i<word.length && isValid){
+                        if ($(".row").eq(indexRow).find("td").eq((indexCol+i)).text()!=""){
+                            isValid=false;
+                        }
+                        i++;
+                    }
+                }else{
+                    while(i<word.length && isValid){
+                        let row=$(".row").eq(indexRow+i);
+                        if (row.find("td").eq(indexCol).text()!=""){
+                            isValid=false;
+                        }
+                        i++;
+                    }
+                }   
+
+                if (isValid){
+                    indexFind=true;
+                    indexes.push(indexRow);
+                    indexes.push(indexCol);
+                }
+
+            }while(!indexFind);
+            indexes.push(dir);
+            return indexes;
+        }   
+
+        function wordDirection(){
+            return Math.floor(Math.random()*2);
+        }
+
+        function fillBoard(){
+            $("td").each(function(){
+                if($(this).text()==""){
+                    $(this).text(String.fromCharCode(65+Math.random()*26));
+                }
+            });
+            // for(let i=0;i<rowSize;i++){
+            //     for(let j=0;j<colSize;j++){
+            //         if (soup[i][j]==0){
+            //             soup[i][j]=String.fromCharCode(65+Math.random()*26);
+            //         }
+            //     }
+            // }
+        }
+
+        function createPlayWords(){
+            let playList=[];
+            for (let i=0;i<10;i++){
+                playList.push(wordList[Math.floor(Math.random()*100)]);
+            }
+            return playList;
+        }
+
+        });
+    </script>
 </body>
 </html>

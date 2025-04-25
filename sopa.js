@@ -114,7 +114,6 @@ function createBoard(){
 function insertWords(){
     let agenda=new Map();
     for (let word of wordList){
-        let line=[];
         let indexes=findIndex(word);
         let wordChar=[...word.toUpperCase()];
         let row=indexes[0];
@@ -156,7 +155,7 @@ function findIndex(word){
         }
         let i=0;
         let isValid=true;
-        if(dir==true){ //comprobamos posicion final segun la direccion
+        if(dir==true){ //comprobamos posicion segun la direccion
             while(i<word.length && isValid){
                 if (soup[indexRow][indexCol+i]!=0){
                     isValid=false;
